@@ -23,3 +23,50 @@ class Obra(BaseEntity):
 
     def disponivel (self, estoque):
         return self.quantidade > 0 
+    
+    def __str__(self):
+        return f"{self.titulo} ({self.ano}) - {self.autor} | Categoria: {self.categoria} | Qtd: {self.quantidade}"
+    
+class Usuario(BaseEntity):
+    def __init__(self, nome, email):
+        super().__init__()
+        self.nome = nome
+        self.email = email
+    
+    def __lt__(self, other):
+        return self.nome.lower() < other.nome.lower()
+    
+    def __str__(self):
+        return self.nome
+    
+class Emprestimo(BaseEntity):
+    def __init__(self, obra, usuario, data_retirada, data_prev_devol):
+        super().__init__()
+        self.obra = obra
+        self.usuario = usuario
+        self.data_retirada = data_retirada
+        self.data_prev_devol = data_prev_devol
+        self.data_devolucao_real = None
+
+    def marcar_devolucao(self, data_dev_real):
+        self.data_devolucao_real = data_dev_real
+    
+    def dias_atraso(self, data_ref):
+        if self.data_devolucao_real == None:
+            print("Livro ainda não foi devolvido.")
+        else:
+            atraso = (self.data_devolucao_real - self.data_prev_devol).days
+            return atraso
+    
+    def __str__(self):
+        retirada = self.data_retirada.strftime('%d/%m/%Y')
+        prevista = self.data_prev_devol.strftime('%d/%m/%Y')
+
+        if self.data_devolucao_real:
+            real = self.data_devolucao_real.strftime('%d/%m/%Y')
+            atraso = self.dias_de_atraso()
+            return (f"Obra: {self.obra.titulo} | Usuário: {self.usuario.nome}\n"
+                    f"Retirada: {retirada} | Prevista: {prevista} | Real: {real} | Atraso: {atraso} dia(s)")
+        else:
+            return (f"Obra: {self.obra.titulo} | Usuário: {self.usuario.nome}\n"
+                    f"Retirada: {retirada} | Prevista: {prevista} | Devolução: pendente")
