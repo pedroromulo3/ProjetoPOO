@@ -51,22 +51,22 @@ class Emprestimo(BaseEntity):
     def marcar_devolucao(self, data_dev_real):
         self.data_devolucao_real = data_dev_real
     
-    def dias_atraso(self, data_ref):
+    def dias_atraso(self):
         if self.data_devolucao_real == None:
             print("Livro ainda não foi devolvido.")
         else:
-            atraso = (self.data_devolucao_real - self.data_prev_devol).days
+            atraso =(self.data_devolucao_real - self.data_prev_devol).days
             return atraso
-    
-    def __str__(self):
-        retirada = self.data_retirada.strftime('%d/%m/%Y')
-        prevista = self.data_prev_devol.strftime('%d/%m/%Y')
 
-        if self.data_devolucao_real:
-            real = self.data_devolucao_real.strftime('%d/%m/%Y')
-            atraso = self.dias_de_atraso()
-            return (f"Obra: {self.obra.titulo} | Usuário: {self.usuario.nome}\n"
-                    f"Retirada: {retirada} | Prevista: {prevista} | Real: {real} | Atraso: {atraso} dia(s)")
-        else:
-            return (f"Obra: {self.obra.titulo} | Usuário: {self.usuario.nome}\n"
-                    f"Retirada: {retirada} | Prevista: {prevista} | Devolução: pendente")
+    def __str__(self):
+            texto = f"Obra: {self.obra.titulo} | Usuário: {self.usuario.nome}\n"
+            texto += f"Retirada: {self.data_retirada.strftime('%d/%m/%Y')} | "
+            texto += f"Prevista: {self.data_prev_devol.strftime('%d/%m/%Y')} | "
+
+            if self.data_devolucao_real:
+                texto += f"Real: {self.data_devolucao_real.strftime('%d/%m/%Y')} | "
+                texto += f"Atraso: {self.dias_atraso()} dia(s)"
+            else:
+                texto += "Devolução pendente"
+
+            return texto
