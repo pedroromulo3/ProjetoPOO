@@ -59,14 +59,5 @@ class Emprestimo(BaseEntity):
             return atraso
 
     def __str__(self):
-            texto = f"Obra: {self.obra.titulo} | Usuário: {self.usuario.nome}\n"
-            texto += f"Retirada: {self.data_retirada.strftime('%d/%m/%Y')} | "
-            texto += f"Prevista: {self.data_prev_devol.strftime('%d/%m/%Y')} | "
+            return f"Obra: {self.obra.titulo} | Retirada: {self.data_retirada.strftime('%d/%m/%Y')} | Prevista: {self.data_prev_devol.strftime('%d/%m/%Y')}"
 
-            if self.data_devolucao_real:
-                texto += f"Real: {self.data_devolucao_real.strftime('%d/%m/%Y')} | "
-                texto += f"Atraso: {self.dias_atraso()} dia(s)"
-            else:
-                texto += "Devolução pendente"
-
-            return texto
