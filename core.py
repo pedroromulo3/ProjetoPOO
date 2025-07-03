@@ -48,48 +48,8 @@ class Acervo:
         emprestimo.data_prev_devol = nova_data
     
     def valor_multa(self, emprestimo, data_ref):
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    #valor_multa
+         dias_atraso = (data_ref - emprestimo.data_prev_devol).days
+         if dias_atraso > 0:
+            return dias_atraso * 1.00
+         else:
+             return 0.0
