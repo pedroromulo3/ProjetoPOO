@@ -21,6 +21,14 @@ class Obra(BaseEntity):
         self.categoria = categoria
         self.quantidade = quantidade
 
+    def __eq__(self, other):
+        if isinstance(other, Obra):
+            return self.titulo == other.titulo and self.autor == other.autor
+        return False
+
+    def __hash__(self):
+        return hash((self.titulo, self.autor))
+    
     def disponivel (self, estoque):
         return self.quantidade > 0 
     
@@ -50,6 +58,10 @@ class Emprestimo(BaseEntity):
 
     def marcar_devolucao(self, data_dev_real):
         self.data_devolucao_real = data_dev_real
+
+    @property
+    def devolvido(self):
+        return self.data_devolucao_real is not None
     
     def dias_atraso(self):
         if self.data_devolucao_real == None:
