@@ -51,7 +51,7 @@ class Acervo:
             obra (Obra): Obra a ser removida.
         """
         if obra in self.obras:
-            if self.obras[obra] > 1:
+            if self.obras[obra] > 0:
                 self.obras[obra] -= 1
             else:
                 del self.obras[obra]
@@ -249,7 +249,7 @@ class Acervo:
             for emp in emprestimos:
                 if emp.usuario == usuario:
                     devolvido = "Sim" if emp.devolvido else "Não"
-                    data_dev = emp.data_devolucao_real.strftime("%d/%m/%Y") if emp.data_devolucao_real else "-"
+                    data_dev = emp.data_devolucao_real.strftime("%d/%m/%Y") if emp.data_devolucao_real != None else "-"
                     tabela.add_row(
                         str(emp.obra),
                         emp.data_retirada.strftime("%d/%m/%Y"),
